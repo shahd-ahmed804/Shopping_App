@@ -4,12 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoping_app/core/common/widget/custom_form_text_fiel.dart';
 import 'package:shoping_app/core/dialogs/app_dialogs.dart';
 import 'package:shoping_app/core/utils/validator_functions.dart';
+import 'package:shoping_app/feature/auth/data/api/auth_api.dart';
 import 'package:shoping_app/feature/auth/data/models/request/register_request_model.dart';
-import 'package:shoping_app/feature/auth/view/login_screen.dart';
-import 'package:shoping_app/feature/auth/view_model/auth_cubit.dart';
+import 'package:shoping_app/feature/auth/data/repo/data_source/auth_data_source_impl.dart';
+import 'package:shoping_app/feature/auth/data/repo/data_source/auth_data_source_interface.dart';
+import 'package:shoping_app/feature/auth/data/repo/repo/auth_repo.dart';
+import 'package:shoping_app/feature/auth/data/repo/repo/auth_repo_impl.dart';
 import 'package:toastification/toastification.dart';
+import '../../../../core/dialogs/app_toasts.dart';
+import '../view_model/auth_cubit.dart';
+import 'login_screen.dart';
 
-import '../../../core/dialogs/app_toasts.dart';
+
 
 
 
@@ -32,7 +38,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     super.initState();
-   cubit = AuthCubit();
+    AuthApi api = AuthApi();
+    AuthDataSourceInterface dataSource = AuthDataSourceImpl(api);
+    AuthRepo repo = AuthRepoImpl(dataSource);
+   cubit = AuthCubit(repo);
   }
   @override
   Widget build(BuildContext context) {

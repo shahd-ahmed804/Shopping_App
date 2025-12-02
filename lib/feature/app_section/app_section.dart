@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../cart/view/cart_screen.dart';
 import '../favorite/view/favorite_screen.dart';
 import '../home/view/home_screen.dart';

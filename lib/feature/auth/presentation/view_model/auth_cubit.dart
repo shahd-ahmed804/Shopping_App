@@ -1,22 +1,23 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shoping_app/core/network/result_api.dart';
-import 'package:shoping_app/feature/auth/data/api/auth_api.dart';
 import 'package:shoping_app/feature/auth/data/models/request/login_request_model.dart';
 import 'package:shoping_app/feature/auth/data/models/request/register_request_model.dart';
 import 'package:shoping_app/feature/auth/data/models/response/login_response_model.dart';
 import 'package:shoping_app/feature/auth/data/models/response/register_response_model.dart';
+import 'package:shoping_app/feature/auth/data/repo/repo/auth_repo.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  AuthCubit(this._repo) : super(AuthInitial());
+  final AuthRepo _repo;
 
   LoginResponseModel?token;
   RegisterResponseModel? dataUser;
   Future<void> login(LoginRequestModel request)async{
     emit(LoadingState());
- final result = await AuthApi.loginAuth(request);
+ final result = await _repo.loginAuth(request);
  switch(result) {
    case SuccessApi<LoginResponseModel>():
      token= result.data;
@@ -28,7 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> register(RegisterRequestModel request)async{
     emit(LoadingState());
-    final result = await AuthApi.registerAuth(request);
+    final result = await _repo.registerAuth(request);
     switch(result) {
       case SuccessApi<RegisterResponseModel>():
        dataUser= result.data;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 abstract class AppDialogs {
-  // Show a loading dialog
   static void showLoadingDialog(BuildContext context) {
     showDialog(
       context: context,

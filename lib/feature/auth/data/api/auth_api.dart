@@ -8,8 +8,8 @@ import 'package:shoping_app/feature/auth/data/models/request/register_request_mo
 import 'package:shoping_app/feature/auth/data/models/response/login_response_model.dart';
 import 'package:shoping_app/feature/auth/data/models/response/register_response_model.dart';
 
-abstract class AuthApi {
- static Future<ResultApi<LoginResponseModel>>loginAuth(LoginRequestModel request)async{
+ class AuthApi {
+  Future<ResultApi<LoginResponseModel>>loginAuth(LoginRequestModel request)async{
     try{
       Uri url =Uri.https(AppApis.baseUrl,AppApis.loginEndPoint);
       var response = await http.post(url,body: request.toJson());
@@ -26,7 +26,7 @@ abstract class AuthApi {
     }
   }
 
- static Future<ResultApi<RegisterResponseModel>> registerAuth(RegisterRequestModel request)async{
+  Future<ResultApi<RegisterResponseModel>> registerAuth(RegisterRequestModel request)async{
   try{
     Uri url = Uri.https(AppApis.baseUrl,AppApis.registerEndPoint);
     var response = await http.post(url,body: request.toJson());
@@ -35,6 +35,5 @@ abstract class AuthApi {
   }catch(e){
     return ErrorApi<RegisterResponseModel>(e.toString());
   }
-
   }
 }
