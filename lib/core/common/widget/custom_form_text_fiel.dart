@@ -72,16 +72,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
-        fillColor: Colors.transparent,
-        filled: true,
         hintText: widget.hintText,
-        hintStyle: TextStyle(
-          fontSize: 16,
-          // color: AppColor.gray,
-          fontWeight: FontWeight.w500,
-        ),
         errorMaxLines: 4,
-        errorStyle: const TextStyle(color: Colors.red),
         prefixIcon: widget.prefixIcon,
         prefix: widget.prefix,
         suffixIcon: widget.isPassword
@@ -94,20 +86,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 ),
               )
             : widget.suffixWidget,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 13, vertical: 14),
-        border: outlineInputBorder(color: Colors.grey, width: 1),
-        enabledBorder: outlineInputBorder(color: Colors.grey, width: 1),
-        focusedBorder: outlineInputBorder(color: Colors.black, width: 1),
-        errorBorder: outlineInputBorder(color: Colors.red, width: 1),
-        focusedErrorBorder: outlineInputBorder(color: Colors.red, width: 1),
-      ),
-    );
-  }
-
-  OutlineInputBorder outlineInputBorder({required Color color, required double width}) {
-    return OutlineInputBorder(
-      borderRadius: widget.borderRadius ?? BorderRadius.circular(10),
-      borderSide: BorderSide(color: color, width: width),
+    ),
     );
   }
 }

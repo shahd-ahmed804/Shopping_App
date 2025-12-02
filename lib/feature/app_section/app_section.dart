@@ -31,20 +31,6 @@ class _AppSectionState extends State<AppSection> {
       bottomNavigationBar: BottomNavigationBar(
         unselectedFontSize: 13,
         selectedFontSize: 14,
-        selectedItemColor: const Color(0xff212121),
-        unselectedItemColor: const Color(0xff5C5C5C),
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: true,
-        selectedLabelStyle: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-          color: Color(0xff212121),
-        ),
-        unselectedLabelStyle: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 15,
-          color: Color(0xff5C5C5C),
-        ),
         currentIndex: index,
         onTap: (selectedIndex) {
           index = selectedIndex;
