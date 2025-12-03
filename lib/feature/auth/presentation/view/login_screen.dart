@@ -4,16 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoping_app/core/dialogs/app_dialogs.dart';
 import 'package:shoping_app/core/dialogs/app_toasts.dart';
 import 'package:shoping_app/feature/app_section/app_section.dart';
-import 'package:shoping_app/feature/auth/data/api/auth_api.dart';
-import 'package:shoping_app/feature/auth/data/repo/data_source/auth_data_source_impl.dart';
-import 'package:shoping_app/feature/auth/data/repo/data_source/auth_data_source_interface.dart';
-import 'package:shoping_app/feature/auth/data/repo/repo/auth_repo.dart';
-import 'package:shoping_app/feature/auth/data/repo/repo/auth_repo_impl.dart';
+import 'package:shoping_app/feature/auth/domain/entities/request/login_request_entity.dart';
+import 'package:shoping_app/feature/auth/domain/use_case/login_use_case.dart';
+import 'package:shoping_app/feature/auth/domain/use_case/register_use_case.dart';
 import 'package:shoping_app/feature/auth/presentation/view/register_screen.dart';
 import 'package:toastification/toastification.dart';
 import '../../../../core/common/widget/custom_form_text_fiel.dart';
 import '../../../../core/utils/validator_functions.dart';
-import '../../data/models/request/login_request_model.dart';
 import '../view_model/auth_cubit.dart';
 
 
@@ -36,10 +33,10 @@ late final AuthCubit cubit;
     super.initState();
     emailController = TextEditingController();
     passwordController = TextEditingController();
-    AuthApi api = AuthApi();
-    AuthDataSourceInterface dataSource = AuthDataSourceImpl(api);
-    AuthRepo repo = AuthRepoImpl(dataSource);
-    cubit = AuthCubit(repo);
+    cubit = AuthCubit(
+      loginUseCase: injectLoginUseCase(),
+      registerUseCase: injectRegisterUseCase(),
+    );
   }
   @override
   void dispose() {
@@ -116,7 +113,7 @@ late final AuthCubit cubit;
                 onPressed: () async{
                   if (formKey.currentState!.validate()) {
                   await  cubit.login(
-                    LoginRequestModel(
+                    LoginRequestEntity(
                       email:emailController.text,
                       password:passwordController.text,
                     ),

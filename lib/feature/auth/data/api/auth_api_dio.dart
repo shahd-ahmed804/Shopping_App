@@ -2,10 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:shoping_app/core/constants/app_apis.dart';
 import 'package:shoping_app/core/network/result_api.dart';
 import 'package:shoping_app/feature/auth/data/api/auth_api.dart';
-import 'package:shoping_app/feature/auth/data/models/request/login_request_model.dart';
-import 'package:shoping_app/feature/auth/data/models/request/register_request_model.dart';
-import 'package:shoping_app/feature/auth/data/models/response/login_response_model.dart';
-import 'package:shoping_app/feature/auth/data/models/response/register_response_model.dart';
+import '../models/request/login_request_dto.dart';
+import '../models/request/register_request_dto.dart';
+import '../models/response/login_response_dto.dart';
+import '../models/response/register_response_dto.dart';
+
 
 class AuthDioApi  extends AuthApi{
   final Dio _dio = Dio(
@@ -16,46 +17,46 @@ class AuthDioApi  extends AuthApi{
     ),
   );
   @override
-  Future<ResultApi<LoginResponseModel>> loginAuth(
-      LoginRequestModel request) async {
+  Future<ResultApi<LoginResponseDto>> loginAuth(
+      LoginRequestDto request) async {
     try {
       Response response = await _dio.post(
         AppApis.loginEndPoint,
         data: request.toJson(),
       );
 
-      return SuccessApi<LoginResponseModel>(
-        LoginResponseModel.fromJson(response.data),
+      return SuccessApi<LoginResponseDto>(
+        LoginResponseDto.fromJson(response.data),
       );
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
-        return ErrorApi<LoginResponseModel>(
+        return ErrorApi<LoginResponseDto>(
             "Don't have account, please try register");
       }
-      return ErrorApi<LoginResponseModel>(e.message ?? "Unknown Error");
+      return ErrorApi<LoginResponseDto>(e.message ?? "Unknown Error");
     } catch (e) {
-      return ErrorApi<LoginResponseModel>(e.toString());
+      return ErrorApi<LoginResponseDto>(e.toString());
     }
   }
 
 
 
 @override
-  Future<ResultApi<RegisterResponseModel>> registerAuth(
-      RegisterRequestModel request) async {
+  Future<ResultApi<RegisterResponseDto>> registerAuth(
+      RegisterRequestDto request) async {
     try {
       Response response = await _dio.post(
         AppApis.registerEndPoint,
         data: request.toJson(),
       );
 
-      return SuccessApi<RegisterResponseModel>(
-        RegisterResponseModel.fromJson(response.data),
+      return SuccessApi<RegisterResponseDto>(
+        RegisterResponseDto.fromJson(response.data),
       );
     } on DioException catch (e) {
-      return ErrorApi<RegisterResponseModel>(e.message ?? "Unknown Error");
+      return ErrorApi<RegisterResponseDto>(e.message ?? "Unknown Error");
     } catch (e) {
-      return ErrorApi<RegisterResponseModel>(e.toString());
+      return ErrorApi<RegisterResponseDto>(e.toString());
     }
   }
 }

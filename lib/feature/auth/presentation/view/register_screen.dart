@@ -5,13 +5,15 @@ import 'package:shoping_app/core/common/widget/custom_form_text_fiel.dart';
 import 'package:shoping_app/core/dialogs/app_dialogs.dart';
 import 'package:shoping_app/core/utils/validator_functions.dart';
 import 'package:shoping_app/feature/auth/data/api/auth_api.dart';
-import 'package:shoping_app/feature/auth/data/models/request/register_request_model.dart';
 import 'package:shoping_app/feature/auth/data/repo/data_source/auth_data_source_impl.dart';
-import 'package:shoping_app/feature/auth/data/repo/data_source/auth_data_source_interface.dart';
-import 'package:shoping_app/feature/auth/data/repo/repo/auth_repo.dart';
+import 'package:shoping_app/feature/auth/domain/entities/request/register_request_entity.dart';
+import 'package:shoping_app/feature/auth/domain/repo/data_source/auth_data_source_interface.dart';
+import 'package:shoping_app/feature/auth/domain/repo/repo/auth_repo.dart';
 import 'package:shoping_app/feature/auth/data/repo/repo/auth_repo_impl.dart';
 import 'package:toastification/toastification.dart';
 import '../../../../core/dialogs/app_toasts.dart';
+import '../../domain/use_case/login_use_case.dart';
+import '../../domain/use_case/register_use_case.dart';
 import '../view_model/auth_cubit.dart';
 import 'login_screen.dart';
 
@@ -38,10 +40,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     super.initState();
-    AuthApi api = AuthApi();
-    AuthDataSourceInterface dataSource = AuthDataSourceImpl(api);
-    AuthRepo repo = AuthRepoImpl(dataSource);
-   cubit = AuthCubit(repo);
+   cubit = AuthCubit(
+     loginUseCase: injectLoginUseCase(),
+     registerUseCase: injectRegisterUseCase(),);
   }
   @override
   Widget build(BuildContext context) {
@@ -137,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 50,
                 onPressed: () async{
                   if (formKey.currentState!.validate()) {
-                await cubit.register(RegisterRequestModel(
+                await cubit.register(RegisterRequestEntity(
                   name: userNameController.text,
                   email:emailController.text,
                  password:  passwordController.text,

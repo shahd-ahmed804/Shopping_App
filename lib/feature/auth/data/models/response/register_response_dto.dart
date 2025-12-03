@@ -1,4 +1,6 @@
-class RegisterResponseModel {
+import 'package:shoping_app/feature/auth/domain/entities/response/register_response_entity.dart';
+
+class RegisterResponseDto {
   int? id;
   String? email;
   String? password;
@@ -8,7 +10,7 @@ class RegisterResponseModel {
   String? creationAt;
   String? updatedAt;
 
-  RegisterResponseModel(
+  RegisterResponseDto(
       {this.id,
         this.email,
         this.password,
@@ -18,7 +20,7 @@ class RegisterResponseModel {
         this.creationAt,
         this.updatedAt});
 
-  RegisterResponseModel.fromJson(Map<String, dynamic> json) {
+  RegisterResponseDto.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
     password = json['password'];
@@ -29,4 +31,12 @@ class RegisterResponseModel {
     updatedAt = json['updatedAt'];
   }
 
+  RegisterResponseEntity toEntity()=> RegisterResponseEntity(
+  name: name??'',
+  email: email??'',
+  id: id ?? 0,
+  password: password??'' ,
+  avatar: avatar??'',
+    role: role??'',
+      );
 }

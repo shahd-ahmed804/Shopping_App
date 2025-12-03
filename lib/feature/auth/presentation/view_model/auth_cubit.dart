@@ -1,40 +1,46 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shoping_app/core/network/result_api.dart';
-import 'package:shoping_app/feature/auth/data/models/request/login_request_model.dart';
-import 'package:shoping_app/feature/auth/data/models/request/register_request_model.dart';
-import 'package:shoping_app/feature/auth/data/models/response/login_response_model.dart';
-import 'package:shoping_app/feature/auth/data/models/response/register_response_model.dart';
-import 'package:shoping_app/feature/auth/data/repo/repo/auth_repo.dart';
+import 'package:shoping_app/feature/auth/domain/entities/request/login_request_entity.dart';
+import 'package:shoping_app/feature/auth/domain/entities/request/register_request_entity.dart';
+import 'package:shoping_app/feature/auth/domain/entities/response/register_response_entity.dart';
+
+import '../../domain/entities/response/login_response_entity.dart';
+import '../../domain/use_case/login_use_case.dart';
+import '../../domain/use_case/register_use_case.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._repo) : super(AuthInitial());
-  final AuthRepo _repo;
+  AuthCubit({
+    required this.loginUseCase,
+    required this.registerUseCase,
+}) : super(AuthInitial());
+  final LoginUseCase loginUseCase;
+  final RegisterUseCase registerUseCase;
 
-  LoginResponseModel?token;
-  RegisterResponseModel? dataUser;
-  Future<void> login(LoginRequestModel request)async{
+  LoginResponseEntity?token;
+  RegisterResponseEntity? dataUser;
+  Future<void> login(LoginRequestEntity request)async{
     emit(LoadingState());
- final result = await _repo.loginAuth(request);
+ final result = await loginUseCase.call(request);
  switch(result) {
-   case SuccessApi<LoginResponseModel>():
+   case SuccessApi<LoginResponseEntity>():
      token= result.data;
    emit(SuccessState());
-   case ErrorApi<LoginResponseModel>():
+   case ErrorApi<LoginResponseEntity>():
      emit(ErrorState(result.errorMessage));
  }
   }
 
-  Future<void> register(RegisterRequestModel request)async{
+  Future<void> register(RegisterRequestEntity request)async{
     emit(LoadingState());
-    final result = await _repo.registerAuth(request);
+    final result = await registerUseCase.call(request);
     switch(result) {
-      case SuccessApi<RegisterResponseModel>():
+      case SuccessApi<RegisterResponseEntity>():
        dataUser= result.data;
        emit(SuccessState());
-      case ErrorApi<RegisterResponseModel>():
+      case ErrorApi<RegisterResponseEntity>():
         emit(ErrorState(result.errorMessage));
     }
   }
